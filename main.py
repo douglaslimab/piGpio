@@ -12,11 +12,11 @@ while True:
     uart4.write('123')
 
     #uart4 writing on uart2
-    output = uart4.read()
-    print(output)
+    print('uart2 --> uart4')
+    print(uart4.read())
 
     #reading on uart4 from uart2
-    output = uart2.read()
-    print(output)
+    print('uart4 --> uart2')
+    print(uart2.read())
 
     time.sleep(1)
