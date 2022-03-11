@@ -1,22 +1,22 @@
 import serial
+import time
 
-uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600)
-uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600)
+uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
 
-def write_2(msg):
-    uart2.write(bytes(msg, 'utf-8'))
+while True:
+    #uart2 writing on uart4
+    uart2.write('abc')
 
-def read_2():
-    return uart2.readline()
+    #reading on uart2 from uart4
+    uart4.write('123')
 
-def write_4(msg):
-    uart4.write(bytes(msg, 'utf-8'))
+    #uart4 writing on uart2
+    output = uart4.read()
+    print(output)
 
-def read_4():
-    return  uart4.readline()
+    #reading on uart4 from uart2
+    output = uart2.read()
+    print(output)
 
-def print_hi(name):
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    time.sleep(1)
