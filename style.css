@@ -1,0 +1,72 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main{
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+
+    background-color: #555;
+}
+
+.main-btn{
+    width: 70%;
+    height: 10vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #aaa;
+    border-radius: 1rem;
+}
+.main-data{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:center;
+
+}
+
+.container{
+    width: 70%;
+    height: 50vh;
+    border: 1px solid #aaa;
+    border-radius: 1rem;
+}
+
+.gpio{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gpio p{
+    margin: 0.5rem;
+}
+
+.uart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sensors{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide{
+    display: none;
+}
