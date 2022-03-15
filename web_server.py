@@ -8,27 +8,65 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-	uart2.write('a')
+	uart2.write('home')
+	uart4.write('home')
 	return render_template('index.html')
 
-@app.route("/write2a")
-def write2():
-	uart2.write('hello from uart2')
-	return "uart2 >> uart4"
+@app.route("/write/<uart>/<res>")
+def write(uart, res):
+	if uart == 'uart2':
+		uart2.write(bytes(res))
+	elif uart == 'uart4':
+		uart4.write(bytes(res))
+	else:
+		data = 'uart error'
+	return res + ' sent from ' + uart
 
-@app.route("/read2")
-def read2():
-	data = uart2.read()
+@app.route("/read/<uart>")
+def read(uart):
+	if uart == 'uart2':
+		data = uart2.read()
+	elif uart == 'uart4':
+		data = uart4.read()
+	else:
+		data = 'uart error'
+	return data + ' read on the ' + uart
+
+@app.route("/gpio/<relay>/<state>")
+def toggle(relay, state):
+	if relay == 'relay1':
+		data = 'Relay 1 ' + state
+	elif relay == 'relay2':
+		data = 'Relay 2 ' + state
+	elif relay == 'relay3':
+		data = 'Relay 3 ' + state
+	elif relay == 'relay4':
+		data = 'Relay 4 ' + state
+	elif relay == 'relay5':
+		data = 'Relay 5 ' + state
+	elif relay == 'relay6':
+		data = 'Relay 6 ' + state
+	elif relay == 'relay7':
+		data = 'Relay 7 ' + state
+	elif relay == 'relay8':
+		data = 'Relay 8 ' + state
+	elif relay == 'relay9':
+		data = 'Relay 9 ' + state
+	else:
+		data = 'invalid entry'
 	return data
 
-@app.route("/write4b")
-def write4():
-	uart4.write('hello from uart4')
-	return "uart4 >> uart2"
+@app.route("/temperature")
+def temperature():
+	return 'get temperature'
 
-@app.route("/read4")
-def read4():
-	return uart4.read()
+@app.route("/humidity")
+def humidity():
+	return 'get humidity'
+
+@app.route("/pressure")
+def pressure():
+	return 'get pressure'
 
 if __name__ == "__main__":
 	app.run(host="192.168.0.80", port=8000, debug=True)
