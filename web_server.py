@@ -32,3 +32,8 @@ def read4():
 
 if __name__ == "__main__":
 	app.run(host="0.0.0.0", port=8000, debug=True)
+
+
+#	/relay/1/on
+#	/uart_test/2/read
+#	/sensors/temperature
