@@ -1,13 +1,13 @@
 from flask import Flask, render_template
 import serial
 
-uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
-uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600)
+uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600)
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
+def home():
 	uart2.write('a')
 	return render_template('index.html')
 
