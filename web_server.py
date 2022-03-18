@@ -20,16 +20,6 @@ relays = {
 for relay in relays.values():
     GPIO.setup(relay, GPIO.OUT)
 
-#GPIO.setup(relay1, GPIO.OUT)
-#GPIO.setup(relay2, GPIO.OUT)
-#GPIO.setup(relay3, GPIO.OUT)
-#GPIO.setup(relay4, GPIO.OUT)
-#GPIO.setup(relay5, GPIO.OUT)
-#GPIO.setup(relay6, GPIO.OUT)
-#GPIO.setup(relay7, GPIO.OUT)
-#GPIO.setup(relay8, GPIO.OUT)
-#GPIO.setup(relay9, GPIO.OUT)
-
 uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600)
 uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600)
 
@@ -69,6 +59,10 @@ def toggle(relay, state):
 		GPIO.output(relays[relay], GPIO.LOW)
 	return render_template('index.html')
 
+@app.route("/current")
+def current():
+	return 'get current'
+
 @app.route("/temperature")
 def temperature():
 	return 'get temperature'
@@ -81,18 +75,8 @@ def humidity():
 def pressure():
 	return 'get pressure'
 
-@app.route("/write/<uart>/<res>")
-def write(uart, res):
-	if uart == "uart2":
-		data = uart2.write(res)
-	elif uart == "uart4":
-		data = uart4.write(res)
-	else:
-		data = 'uart error'
-	return data
-
 if __name__ == "__main__":
-	app.run(host="0.0.0.0", port=8000, debug=True)
+	app.run(host="dougserver", port=8000, debug=True)
 
 
 #	/relay/1/on
