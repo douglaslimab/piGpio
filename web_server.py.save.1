@@ -1,0 +1,19 @@
+from flask import Flask, render_template
+import serial
+
+app = Flask(__name__)
+
+uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHT_BITS)
+uart4 = serial.Serial(port='/dev/ttyAMA2', buatrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOP
+
+@app.route("/")
+def hello():
+	return render_template('index.html')
+
+@app.route("/gpio/<string:id>/<string:data>")
+def send_data(id, data):
+	
+
+
+if __name__ == "__main__":
+	app.run(host="0.0.0.0", port=8000, debug=True)
