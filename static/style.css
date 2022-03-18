@@ -87,6 +87,11 @@
     background-color: #777;
     border-radius: 0.5rem;
 }
+
+.tog-on{
+    background-color:#0f0;
+}
+
 .btn-toggler{
     position: relative;
 
@@ -99,7 +104,6 @@
     position: relative;
     top: 0;
     left: 50%;
-    background-color: #0f0;
 }
 
 .uart{

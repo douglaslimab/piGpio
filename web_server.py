@@ -1,5 +1,34 @@
 from flask import Flask, render_template
 import serial
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+relays = {
+	'relay1': 13,
+	'relay2': 26,
+	'relay3': 14,
+	'relay4': 15,
+	'relay5': 23,
+	'relay6': 24,
+	'relay7': 25,
+	'relay8': 12,
+	'relay9': 16
+	}
+
+for relay in relays.values():
+    GPIO.setup(relay, GPIO.OUT)
+
+#GPIO.setup(relay1, GPIO.OUT)
+#GPIO.setup(relay2, GPIO.OUT)
+#GPIO.setup(relay3, GPIO.OUT)
+#GPIO.setup(relay4, GPIO.OUT)
+#GPIO.setup(relay5, GPIO.OUT)
+#GPIO.setup(relay6, GPIO.OUT)
+#GPIO.setup(relay7, GPIO.OUT)
+#GPIO.setup(relay8, GPIO.OUT)
+#GPIO.setup(relay9, GPIO.OUT)
 
 uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600)
 uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600)
@@ -34,27 +63,11 @@ def read(uart):
 
 @app.route("/gpio/<relay>/<state>")
 def toggle(relay, state):
-	if relay == 'relay1':
-		data = 'Relay 1 ' + state
-	elif relay == 'relay2':
-		data = 'Relay 2 ' + state
-	elif relay == 'relay3':
-		data = 'Relay 3 ' + state
-	elif relay == 'relay4':
-		data = 'Relay 4 ' + state
-	elif relay == 'relay5':
-		data = 'Relay 5 ' + state
-	elif relay == 'relay6':
-		data = 'Relay 6 ' + state
-	elif relay == 'relay7':
-		data = 'Relay 7 ' + state
-	elif relay == 'relay8':
-		data = 'Relay 8 ' + state
-	elif relay == 'relay9':
-		data = 'Relay 9 ' + state
-	else:
-		data = 'invalid entry'
-	return data
+	if state == 'on':
+		GPIO.output(relays[relay], GPIO.HIGH)
+	elif state == 'off':
+		GPIO.output(relays[relay], GPIO.LOW)
+	return render_template('index.html')
 
 @app.route("/temperature")
 def temperature():
