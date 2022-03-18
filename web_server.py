@@ -81,5 +81,20 @@ def humidity():
 def pressure():
 	return 'get pressure'
 
+@app.route("/write/<uart>/<res>")
+def write(uart, res):
+	if uart == "uart2":
+		data = uart2.write(res)
+	elif uart == "uart4":
+		data = uart4.write(res)
+	else:
+		data = 'uart error'
+	return data
+
 if __name__ == "__main__":
-	app.run(host="192.168.0.80", port=8000, debug=True)
+	app.run(host="0.0.0.0", port=8000, debug=True)
+
+
+#	/relay/1/on
+#	/uart_test/2/read
+#	/sensors/temperature
