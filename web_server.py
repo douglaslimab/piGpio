@@ -25,6 +25,21 @@ uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600)
 
 app = Flask(__name__)
 
+@app.route("/gpio/getState")
+def getRelayState():
+	relays_state = {
+		'relay1': GPIO.digitalRead(13),
+		'relay2': GPIO.digitalRead(26),
+		'relay3': GPIO.digitalRead(14),
+		'relay4': GPIO.digitalRead(15),
+		'relay5': GPIO.digitalRead(23),
+		'relay6': GPIO.digitalRead(24),
+		'relay7': GPIO.digitalRead(25),
+		'relay8': GPIO.digitalRead(12),
+		'relay9': GPIO.digitalRead(16)
+		}
+	return relays_state
+
 @app.route("/")
 def home():
 	uart2.write('home')
@@ -44,9 +59,9 @@ def write(uart, res):
 @app.route("/read/<uart>")
 def read(uart):
 	if uart == 'uart2':
-		data = uart2.read()
+		data = uart2.read(5)
 	elif uart == 'uart4':
-		data = uart4.read()
+		data = uart4.read(5)
 	else:
 		data = 'uart error'
 	return data + ' read on the ' + uart
@@ -57,6 +72,16 @@ def toggle(relay, state):
 		GPIO.output(relays[relay], GPIO.HIGH)
 	elif state == 'off':
 		GPIO.output(relays[relay], GPIO.LOW)
+	elif state == 'all':
+		for relay in relays:
+			GPIO.output(relays[relay], GPIO.HIGH)
+	elif state == 'none':
+		for relay in relays:
+			GPIO.output(relays[relay], GPIO.LOW)
+	return render_template('index.html')
+
+@app.route("/uart/<address>/<data>")
+def send(address, data):
 	return render_template('index.html')
 
 @app.route("/current")
