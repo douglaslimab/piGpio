@@ -17,6 +17,16 @@ relays = {
 	'relay9': 16
 	}
 
+uart2_address = 0x00
+uart4_address = 0x00
+
+GPIO.setup(2, GPIO.OUT)
+GPIO.setup(17, GPIO.OUT)
+
+GPIO.setup(20, GPIO.OUT)
+GPIO.setup(10, GPIO.OUT)
+GPIO.setup(11, GPIO.OUT)
+
 for relay in relays.values():
     GPIO.setup(relay, GPIO.OUT)
 
@@ -24,6 +34,19 @@ uart2 = serial.Serial(port='/dev/ttyAMA1', baudrate=9600)
 uart4 = serial.Serial(port='/dev/ttyAMA2', baudrate=9600)
 
 app = Flask(__name__)
+
+def inc_uart2_address():
+	global uart2_address
+	uart2_address += 1
+	GPIO.output(2, (uart2_address & 1))
+	GPIO.output(17, (uart2_address & 2))
+
+def inc_uart4_address():
+	global uart4_address
+	uart4_address += 1
+	GPIO.output(20, (uart4_address & 1))
+	GPIO.output(10, (uart4_address & 2))
+	GPIO.output(11, (uart4_address & 4))
 
 @app.route("/gpio/getState")
 def getRelayState():
@@ -45,6 +68,14 @@ def home():
 	uart2.write('home')
 	uart4.write('home')
 	return render_template('index.html')
+
+@app.route("/address/<uart>")
+def set_address(uart):
+	if(uart == "2"):
+		inc_uart2_address()
+	elif(uart == "4"):
+		inc_uart4_address()
+	return "ok"
 
 @app.route("/write/<uart>/<res>")
 def write(uart, res):
