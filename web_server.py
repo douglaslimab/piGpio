@@ -41,9 +41,22 @@ def inc_uart2_address():
 	GPIO.output(2, (uart2_address & 1))
 	GPIO.output(17, (uart2_address & 2))
 
+def set_uart2_address(add):
+	global uart2_address
+	uart2_address = add
+	GPIO.output(2, (uart2_address & 1))
+	GPIO.output(17, (uart2_address & 2))
+
 def inc_uart4_address():
 	global uart4_address
 	uart4_address += 1
+	GPIO.output(20, (uart4_address & 1))
+	GPIO.output(10, (uart4_address & 2))
+	GPIO.output(11, (uart4_address & 4))
+
+def set_uart4_address(add):
+	global uart4_address
+	uart4_address = add
 	GPIO.output(20, (uart4_address & 1))
 	GPIO.output(10, (uart4_address & 2))
 	GPIO.output(11, (uart4_address & 4))
@@ -70,12 +83,22 @@ def home():
 	return render_template('index.html')
 
 @app.route("/address/<uart>")
-def set_address(uart):
+def inc_address(uart):
 	if(uart == "2"):
 		inc_uart2_address()
 	elif(uart == "4"):
 		inc_uart4_address()
-	return "ok"
+	return "Increment Address"
+
+@app.route("/set_uart/<uart>/<address>")
+def set_address(uart, address):
+	if(uart == "2"):
+		address = int(address)
+		set_uart2_address(address)
+	elif(uart == "4"):
+		address = int(address)
+		set_uart4_address(address)
+	return "Set Address"
 
 @app.route("/write/<uart>/<res>")
 def write(uart, res):
